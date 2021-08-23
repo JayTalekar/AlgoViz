@@ -3,4 +3,6 @@
     <string name="graph">Graph</string>
     <string name="pathfinding">Pathfinding</string>
     <string name="data_structures">Data Structures</string>
+    <string name="stack">Stack</string>
+    <string name="queue">Queue</string>
 </resources>

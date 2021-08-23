@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/ts1_start">
+        <Constraint
+            android:id="@+id/tv_stack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/ds_view2"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ds_view1" />
+
+        <Constraint
+            android:id="@id/iv_stack_bucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view2"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view1" />
+
+        <Constraint
+            android:id="@+id/iv_element_1"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/iv_element_2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_element_1"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/iv_element_3"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toTopOf="@+id/iv_element_2"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/tv_queue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/ds_view3"
+            app:layout_constraintEnd_toStartOf="@id/iv_q_element_1"
+            app:layout_constraintTop_toBottomOf="@id/ds_view2" />
+
+        <Constraint
+            android:id="@id/iv_queue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view3"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view2" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toTopOf="@id/ds_view3"
+            app:layout_constraintEnd_toStartOf="@id/iv_q_element_2"
+            app:layout_constraintTop_toBottomOf="@id/ds_view2" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toTopOf="@id/ds_view3"
+            app:layout_constraintEnd_toStartOf="@id/iv_q_element_3"
+            app:layout_constraintTop_toBottomOf="@id/ds_view2" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toTopOf="@id/ds_view3"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ds_view2" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/ts1_end">
+        <Constraint
+            android:id="@id/tv_stack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view2"
+            app:layout_constraintEnd_toStartOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view1" />
+
+        <Constraint
+            android:id="@id/iv_stack_bucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_stack"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view1" />
+
+        <Constraint
+            android:id="@+id/iv_element_1"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stack_bucket"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/iv_element_2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stack_bucket"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/iv_element_3"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_stack_bucket"
+            app:layout_constraintEnd_toEndOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="@+id/iv_stack_bucket" />
+
+        <Constraint
+            android:id="@+id/tv_queue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view3"
+            app:layout_constraintEnd_toStartOf="@+id/iv_stack_bucket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view2" />
+
+        <Constraint
+            android:id="@id/iv_queue"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toTopOf="@+id/ds_view3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_queue"
+            app:layout_constraintTop_toBottomOf="@+id/ds_view2" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_queue"
+            app:layout_constraintStart_toStartOf="@+id/iv_queue"
+            app:layout_constraintTop_toTopOf="@+id/iv_queue" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="60dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_queue"
+            app:layout_constraintStart_toStartOf="@+id/iv_queue"
+            app:layout_constraintTop_toTopOf="@+id/iv_queue" />
+
+        <Constraint
+            android:id="@+id/iv_q_element_3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="90dp"
+            android:rotation="90"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_queue"
+            app:layout_constraintStart_toStartOf="@+id/iv_queue"
+            app:layout_constraintTop_toTopOf="@+id/iv_queue" />
+
+
+    </ConstraintSet>
+
+    <Transition
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@id/ts1_end"
+        app:constraintSetStart="@+id/ts1_start"
+        app:duration="1000" />
+
+</MotionScene>

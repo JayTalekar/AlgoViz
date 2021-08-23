@@ -8,5 +8,16 @@
         android:id="@+id/homeFragment"
         android:name="com.jaytalekar.algoviz.ui.main.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_homeFragment_to_dataStructures"
+            app:destination="@id/dataStructures"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataStructures"
+        android:name="com.jaytalekar.algoviz.ui.main.DataStructures"
+        android:label="data_structures_fragment"
+        tools:layout="@layout/data_structures_fragment" />
 </navigation>
