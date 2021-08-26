@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_gradient"
+    tools:context=".ui.datastructures.QueueFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/tv_queue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/queue"
+            android:textSize="42sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintBottom_toTopOf="@+id/tv_peek"
+            app:layout_constraintEnd_toStartOf="@+id/tv_dequeue"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_enqueue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/tv_enqueue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/enqueue"
+            android:textSize="28sp"
+            android:fontFamily="@font/abril_fatface"
+            android:layout_marginTop="42dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_peek"
+            app:layout_constraintEnd_toStartOf="@+id/tv_dequeue"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_queue" />
+
+        <TextView
+            android:id="@+id/tv_dequeue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/dequeue"
+            android:textSize="28sp"
+            android:fontFamily="@font/abril_fatface"
+            android:layout_marginTop="42dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_peek"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_enqueue"
+            app:layout_constraintTop_toBottomOf="@+id/tv_queue" />
+
+        <TextView
+            android:id="@+id/tv_peek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@string/peek"
+            android:textSize="28sp"
+            android:fontFamily="@font/abril_fatface"
+            android:layout_marginTop="72dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_q_notifier"
+            app:layout_constraintEnd_toStartOf="@+id/tv_dequeue"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_enqueue"
+            app:layout_constraintTop_toBottomOf="@+id/tv_queue" />
+
+        <TextView
+            android:id="@+id/tv_q_notifier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Queue Empty"
+            android:textSize="20sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_peek" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/queue_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <ImageView
+            android:id="@+id/iv_queue"
+            android:layout_width="380dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:scaleX="1.4"
+            android:src="@drawable/ic_queue" />
+
+    </RelativeLayout>
+
+</LinearLayout>

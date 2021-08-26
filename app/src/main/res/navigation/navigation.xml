@@ -19,5 +19,26 @@
         android:id="@+id/dataStructures"
         android:name="com.jaytalekar.algoviz.ui.main.DataStructures"
         android:label="data_structures_fragment"
-        tools:layout="@layout/data_structures_fragment" />
+        tools:layout="@layout/data_structures_fragment">
+        <action
+            android:id="@+id/action_dataStructures_to_stackFragment"
+            app:destination="@id/stackFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_dataStructures_to_queueFragment"
+            app:destination="@id/queueFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/stackFragment"
+        android:name="com.jaytalekar.algoviz.ui.datastructures.StackFragment"
+        android:label="stack_fragment"
+        tools:layout="@layout/stack_fragment" />
+    <fragment
+        android:id="@+id/queueFragment"
+        android:name="com.jaytalekar.algoviz.ui.datastructures.QueueFragment"
+        android:label="fragment_queue"
+        tools:layout="@layout/fragment_queue" />
 </navigation>

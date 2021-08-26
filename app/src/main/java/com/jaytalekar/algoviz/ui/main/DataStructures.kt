@@ -4,31 +4,52 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.jaytalekar.algoviz.R
 
 class DataStructures : Fragment() {
 
-    private lateinit var viewModel: DataStructuresViewModel
     private lateinit var rootView: View
+
+    private lateinit var tvStack: TextView
+    private lateinit var ivStack: ImageView
+    private lateinit var tvQueue: TextView
+    private lateinit var ivQueue: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rootView = inflater.inflate(R.layout.data_structures_fragment, container, false)
+
+        init()
+
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DataStructuresViewModel::class.java)
-        // TODO: Use the ViewModel
+    fun init() {
+        tvStack = rootView.findViewById(R.id.tv_stack)
+        ivStack = rootView.findViewById(R.id.iv_stack_bucket)
+        tvQueue = rootView.findViewById(R.id.tv_queue)
+        ivQueue = rootView.findViewById(R.id.iv_queue)
+
+        tvStack.setOnClickListener(stackOnClickListener)
+        ivStack.setOnClickListener(stackOnClickListener)
+        tvQueue.setOnClickListener(queueOnClickListener)
+        ivQueue.setOnClickListener(queueOnClickListener)
     }
 
-    override fun onStart() {
-        super.onStart()
+    private val stackOnClickListener = View.OnClickListener {
+        Navigation.findNavController(this.rootView)
+            .navigate(R.id.action_dataStructures_to_stackFragment)
+    }
+
+    private val queueOnClickListener = View.OnClickListener {
+        Navigation.findNavController(this.rootView)
+            .navigate(R.id.action_dataStructures_to_queueFragment)
     }
 
 }

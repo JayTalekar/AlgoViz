@@ -5,4 +5,9 @@
     <string name="data_structures">Data Structures</string>
     <string name="stack">Stack</string>
     <string name="queue">Queue</string>
+    <string name="push">Push</string>
+    <string name="pop">Pop</string>
+    <string name="enqueue">Enqueue</string>
+    <string name="dequeue">Dequeue</string>
+    <string name="peek">Peek</string>
 </resources>

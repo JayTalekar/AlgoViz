@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_gradient"
+    tools:context=".ui.datastructures.StackFragment">
+
+    <RelativeLayout
+        android:id="@+id/stack_frame_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_stack_bucket"
+            android:layout_width="135dp"
+            android:layout_height="360dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="160dp"
+            android:scaleY="2"
+            android:src="@drawable/ic_stack_bucket" />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_push"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/abril_fatface"
+            android:gravity="center"
+            android:text="@string/push"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_pop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_stack" />
+
+        <TextView
+            android:id="@+id/tv_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/abril_fatface"
+            android:gravity="center"
+            android:text="@string/pop"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_peek"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_push" />
+
+        <TextView
+            android:id="@+id/tv_peek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/abril_fatface"
+            android:gravity="center"
+            android:text="@string/peek"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_notifier"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pop" />
+
+        <TextView
+            android:id="@+id/tv_stack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stack"
+            android:fontFamily="@font/montserrat"
+            android:textSize="42sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_push"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/tv_notifier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stack Empty"
+            android:textSize="18sp"
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_peek" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
