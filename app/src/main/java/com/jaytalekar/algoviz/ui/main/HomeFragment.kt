@@ -10,34 +10,40 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.jaytalekar.algoviz.R
 
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModel: HomeViewModel
     private lateinit var rootView: View
+
+    private lateinit var tvDataStructures: TextView
+    private lateinit var tvSearchSort: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         rootView = inflater.inflate(R.layout.home_fragment, container, false) as MotionLayout
+
+        init()
+
         return rootView
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+    fun init() {
+        tvDataStructures = rootView.findViewById(R.id.tv_ds)
+        tvDataStructures.setOnClickListener {
+            Navigation.findNavController(rootView)
+                .navigate(R.id.action_homeFragment_to_dataStructures)
+        }
 
-        val tvDataStructures: TextView = rootView.findViewById(R.id.tv_ds)
-        tvDataStructures.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(tvDS: View?) {
-                Navigation.findNavController(rootView)
-                    .navigate(R.id.action_homeFragment_to_dataStructures)
-            }
-        })
+        tvSearchSort = rootView.findViewById(R.id.tv_search_sort)
+        tvSearchSort.setOnClickListener {
+            Navigation.findNavController(rootView)
+                .navigate(R.id.action_homeFragment_to_searchingSorting)
+        }
+
     }
 
     override fun onStart() {

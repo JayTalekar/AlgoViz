@@ -7,19 +7,25 @@
         <entry key="..\:/Android/AlgoViz/app/src/main/res/layout/main_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_dark_border.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_gradient.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_hollow_border.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_light_border.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_other_signin_options.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/circle_shape_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/gradient_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/green_circle_shape_bg.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_bar.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_element.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_stack_bucket.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/light_circle_shape_bg.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/rounded_bar.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/turquoise_circle_shape_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/font/headerfont.xml" value="0.396875" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/data_structures_fragment.xml" value="0.25" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_queue.xml" value="0.35260416666666666" />
-        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/home_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_searching_sorting.xml" value="0.33" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_sorting.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/home_fragment.xml" value="0.33" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/main_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/main_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/stack_fragment.xml" value="0.36666666666666664" />

@@ -12,6 +12,15 @@
             app:layout_constraintTop_toBottomOf="parent" />
 
         <Constraint
+            android:id="@id/tv_search_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <Constraint
             android:id="@id/tv_pathfinding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,10 +45,19 @@
             android:id="@+id/tv_ds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/tv_pathfinding"
+            app:layout_constraintBottom_toTopOf="@+id/tv_search_sort"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_header" />
+
+        <Constraint
+            android:id="@+id/tv_search_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/tv_pathfinding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ds" />
 
         <Constraint
             android:id="@+id/tv_pathfinding"
@@ -48,7 +66,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_graph"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ds" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_sort" />
         <Constraint
             android:id="@+id/tv_graph"
             android:layout_width="wrap_content"

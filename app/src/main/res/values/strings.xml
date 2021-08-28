@@ -10,4 +10,11 @@
     <string name="enqueue">Enqueue</string>
     <string name="dequeue">Dequeue</string>
     <string name="peek">Peek</string>
+    <string name="sorting">Sorting</string>
+    <string name="searching">Searching</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="sort">Sort</string>
+    <string name="random_data">Random Data</string>
+    <string name="custom_data">Custom Data</string>
+    <string name="searching_sorting">Searching/Sorting</string>
 </resources>

@@ -46,6 +46,18 @@
         android:background="@drawable/light_circle_shape_bg" />
 
     <TextView
+        android:id="@+id/tv_search_sort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:fontFamily="@font/abril_fatface"
+        android:text="@string/searching_sorting"
+        android:textSize="24sp"
+        android:textColor="@color/goldenrod"
+        android:background="@drawable/light_circle_shape_bg" />
+
+    <TextView
         android:id="@+id/tv_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
