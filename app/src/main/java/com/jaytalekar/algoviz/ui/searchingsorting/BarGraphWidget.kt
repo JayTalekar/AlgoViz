@@ -1,8 +1,6 @@
 package com.jaytalekar.algoviz.ui.searchingsorting
 
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -12,32 +10,31 @@ import androidx.constraintlayout.motion.widget.TransitionBuilder
 import androidx.constraintlayout.widget.ConstraintSet
 import com.jaytalekar.algoviz.R
 import com.jaytalekar.algoviz.ui.boundBottomToParentBottom
-import kotlinx.coroutines.*
 
-class BarGraphWidget : MotionLayout {
+open class BarGraphWidget : MotionLayout {
 
     companion object {
         const val BAR_TOP_MARGIN = 10
         const val HIGHLIGHT_ELEVATION = 48
     }
 
-    private val highlightTextColor = resources.getColor(R.color.white)
-    private val highlightBackground = resources.getDrawable(R.drawable.bg_dark_border)
+    val highlightTextColor = resources.getColor(R.color.white)
+    val highlightBackground = resources.getDrawable(R.drawable.bg_dark_border)
 
-    private val unhighlightTextColor = resources.getColor(R.color.black)
-    private val unhighlightBackground = resources.getDrawable(R.drawable.bg_light_border)
+    val unhighlightTextColor = resources.getColor(R.color.black)
+    val unhighlightBackground = resources.getDrawable(R.drawable.bg_light_border)
 
     private val scene = MotionScene(this)
 
-    private val startSetId = View.generateViewId()
-    private val startSet = ConstraintSet()
+    val startSetId = View.generateViewId()
+    val startSet = ConstraintSet()
 
-    private val endSetId = View.generateViewId()
-    private val endSet = ConstraintSet()
+    val endSetId = View.generateViewId()
+    val endSet = ConstraintSet()
 
-    private var transitionInProgress: Boolean = false
-    private val transitionId = View.generateViewId()
-    private val transition = TransitionBuilder.buildTransition(
+    var transitionInProgress: Boolean = false
+    val transitionId = View.generateViewId()
+    val transition = TransitionBuilder.buildTransition(
         scene,
         transitionId,
         startSetId, startSet,
@@ -47,7 +44,7 @@ class BarGraphWidget : MotionLayout {
     private var containerH: Int = 0
     private var containerW: Int = 0
 
-    private var viewList: List<View> = listOf()
+    var viewList: List<View> = listOf()
 
     private val transitionListener = object : TransitionListener {
         override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
@@ -147,77 +144,6 @@ class BarGraphWidget : MotionLayout {
 
         setTransition(startSetId, endSetId)
         this.transitionToEnd()
-    }
-
-    suspend fun highlightBars(leftIndex: Int, rightIndex: Int) {
-        withContext(Dispatchers.Main) {
-
-            (viewList[leftIndex] as TextView).apply {
-                elevation = fromDpToPx(HIGHLIGHT_ELEVATION)
-                typeface = Typeface.DEFAULT_BOLD
-                paintFlags = Paint.UNDERLINE_TEXT_FLAG
-                background = highlightBackground
-                setTextColor(highlightTextColor)
-            }
-
-
-            (viewList[rightIndex] as TextView).apply {
-                elevation = fromDpToPx(HIGHLIGHT_ELEVATION)
-                typeface = Typeface.DEFAULT_BOLD
-                paintFlags = Paint.UNDERLINE_TEXT_FLAG
-                background = highlightBackground
-                setTextColor(highlightTextColor)
-            }
-        }
-    }
-
-    suspend fun animateSwap(adapter: BarGraphAdapter, leftIndex: Int, rightIndex: Int) {
-        withContext(Dispatchers.Main) {
-            val leftVal = adapter.getItem(leftIndex)
-            val rightVal = adapter.getItem(rightIndex)
-
-            val leftBarH = viewList[leftIndex].height
-            val rightBarH = viewList[rightIndex].height
-
-            adapter.setItem(leftIndex, rightVal)
-            adapter.setItem(rightIndex, leftVal)
-
-            (viewList[leftIndex] as TextView).apply {
-                text = rightVal.toString()
-            }
-            (viewList[rightIndex] as TextView).apply {
-                text = leftVal.toString()
-            }
-
-
-            endSet.constrainHeight(viewList[leftIndex].id, rightBarH)
-            endSet.constrainHeight(viewList[rightIndex].id, leftBarH)
-
-            setTransition(startSetId, endSetId)
-            transition.duration = 500
-            this@BarGraphWidget.transitionToEnd()
-        }
-    }
-
-    suspend fun unhighlightBars(leftIndex: Int, rightIndex: Int) {
-        withContext(Dispatchers.Main) {
-            (viewList[leftIndex] as TextView).apply {
-                elevation = fromDpToPx(0)
-                typeface = Typeface.DEFAULT
-                paintFlags = View.INVISIBLE
-                background = unhighlightBackground
-                setTextColor(unhighlightTextColor)
-            }
-
-
-            (viewList[rightIndex] as TextView).apply {
-                elevation = fromDpToPx(0)
-                typeface = Typeface.DEFAULT
-                paintFlags = View.INVISIBLE
-                background = unhighlightBackground
-                setTextColor(unhighlightTextColor)
-            }
-        }
     }
 
     private fun getViewList(adapter: BarGraphAdapter): List<View> {

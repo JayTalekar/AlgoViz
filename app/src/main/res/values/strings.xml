@@ -19,4 +19,7 @@
     <string name="searching_sorting">Searching/Sorting</string>
     <string name="bubble_sort">Bubble Sort</string>
     <string name="selection_sort">Selection Sort</string>
+    <string name="linear_search">Linear Search</string>
+    <string name="binary_search">Binary Search</string>
+    <string name="search">Search</string>
 </resources>

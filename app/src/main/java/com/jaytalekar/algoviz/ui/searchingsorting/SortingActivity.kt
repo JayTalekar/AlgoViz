@@ -8,11 +8,11 @@ import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.jaytalekar.algoviz.R
+import com.jaytalekar.algoviz.ui.getRandomData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 
 class SortingActivity : AppCompatActivity() {
@@ -24,7 +24,7 @@ class SortingActivity : AppCompatActivity() {
         BUBBLE_SORT, SELECTION_SORT
     }
 
-    private lateinit var widget: BarGraphWidget
+    private lateinit var widget: SortBarGraphWidget
     private lateinit var adapter: BarGraphAdapter
 
     private lateinit var sortingAlgo: SortingAlgo
@@ -77,23 +77,20 @@ class SortingActivity : AppCompatActivity() {
     private val onClickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.tv_random_data -> {
-                Log.d(TAG, "Random Data Tapped!!")
-                widget.updateData(adapter, getRandomData(10))
+                if (!widget.transitionInProgress)
+                    widget.updateData(adapter, getRandomData(10))
             }
 
             R.id.tv_bubble_sort -> {
-                Log.d(TAG, "Bubble Sort Tapped!!")
                 sortingAlgo = SortingAlgo.BUBBLE_SORT
                 updateView()
             }
 
             R.id.tv_selection_sort -> {
-                Log.d(TAG, "Selection Sort Tapped!!")
                 sortingAlgo = SortingAlgo.SELECTION_SORT
                 updateView()
             }
             R.id.tv_sort -> {
-                Log.d(TAG, "Sort Tapped!!")
                 if (sortingAlgo == SortingAlgo.BUBBLE_SORT)
                     bubbleSort(adapter.getAllItems())
                 else
@@ -111,14 +108,6 @@ class SortingActivity : AppCompatActivity() {
             tvSelectionSort.typeface = Typeface.DEFAULT_BOLD
             tvBubbleSort.typeface = Typeface.DEFAULT
         }
-    }
-
-    private fun getRandomData(size: Int): MutableList<Int> {
-        val valueList = mutableListOf<Int>()
-        for (i in 0 until size)
-            valueList.add(Random.nextInt(10, 100))
-
-        return valueList
     }
 
     private fun bubbleSort(valueList: List<Int>) {

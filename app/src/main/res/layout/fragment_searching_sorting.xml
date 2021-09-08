@@ -8,23 +8,23 @@
     tools:context=".ui.main.SearchingSorting">
 
     <TextView
-        android:id="@+id/tv_sorting"
+        android:id="@+id/tv_searching"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginTop="20dp"
-        android:text="@string/sorting"
+        android:text="@string/searching"
         android:textSize="32sp"
         android:fontFamily="@font/montserrat"
         android:gravity="center" />
 
     <TextView
-        android:id="@+id/tv_searching"
+        android:id="@+id/tv_sorting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginBottom="20dp"
-        android:text="@string/searching"
+        android:text="@string/sorting"
         android:textSize="32sp"
         android:fontFamily="@font/montserrat"
         android:gravity="center" />

@@ -2,6 +2,15 @@ package com.jaytalekar.algoviz.ui
 
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintSet
+import kotlin.random.Random
+
+fun getRandomData(size: Int): MutableList<Int> {
+    val valueList = mutableListOf<Int>()
+    for (i in 0 until size)
+        valueList.add(Random.nextInt(10, 100))
+
+    return valueList
+}
 
 fun boundStartToParentStart(view: View, set: ConstraintSet) {
     set.connect(
