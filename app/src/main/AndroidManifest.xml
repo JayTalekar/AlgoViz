@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlgoViz">
         <activity
+            android:name=".ui.searchingsorting.SearchActivity"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
+            android:name=".ui.searchingsorting.SortingActivity"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -31,13 +31,13 @@ class SearchingSorting : Fragment() {
         tvSorting = rootView.findViewById(R.id.tv_sorting)
         tvSorting.setOnClickListener {
             Navigation.findNavController(rootView)
-                .navigate(R.id.action_searchingSorting_to_sortingFragment)
+                .navigate(R.id.action_searchingSorting_to_sortingActivity)
         }
 
         tvSearching = rootView.findViewById(R.id.tv_searching)
         tvSearching.setOnClickListener {
             Navigation.findNavController(rootView)
-                .navigate(R.id.action_searchingSorting_to_searchFragment)
+                .navigate(R.id.action_searchingSorting_to_searchActivity)
         }
     }
 

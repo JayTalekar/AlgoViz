@@ -52,24 +52,24 @@
         android:label="fragment_searching_sorting"
         tools:layout="@layout/fragment_searching_sorting">
         <action
-            android:id="@+id/action_searchingSorting_to_sortingFragment"
-            app:destination="@id/sortingFragment"
+            android:id="@+id/action_searchingSorting_to_searchActivity"
+            app:destination="@id/searchActivity"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
         <action
-            android:id="@+id/action_searchingSorting_to_searchFragment"
-            app:destination="@id/searchFragment"
+            android:id="@+id/action_searchingSorting_to_sortingActivity"
+            app:destination="@id/sortingActivity"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
     </fragment>
-    <fragment
-        android:id="@+id/sortingFragment"
-        android:name="com.jaytalekar.algoviz.ui.searchingsorting.SortingFragment"
-        android:label="fragment_sorting"
-        tools:layout="@layout/fragment_sorting" />
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.jaytalekar.algoviz.ui.searchingsorting.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+    <activity
+        android:id="@+id/searchActivity"
+        android:name="com.jaytalekar.algoviz.ui.searchingsorting.SearchActivity"
+        android:label="activity_search"
+        tools:layout="@layout/activity_search" />
+    <activity
+        android:id="@+id/sortingActivity"
+        android:name="com.jaytalekar.algoviz.ui.searchingsorting.SortingActivity"
+        android:label="activity_sorting"
+        tools:layout="@layout/activity_sorting" />
 </navigation>
