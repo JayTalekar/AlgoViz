@@ -19,6 +19,11 @@
             app:destination="@id/searchingSorting"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_pathfindingFragment"
+            app:destination="@id/pathfindingFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/dataStructures"
@@ -72,4 +77,9 @@
         android:name="com.jaytalekar.algoviz.ui.searchingsorting.SortingActivity"
         android:label="activity_sorting"
         tools:layout="@layout/activity_sorting" />
+    <fragment
+        android:id="@+id/pathfindingFragment"
+        android:name="com.jaytalekar.algoviz.ui.pathfinding.PathfindingFragment"
+        android:label="fragment_pathfinding"
+        tools:layout="@layout/fragment_pathfinding" />
 </navigation>

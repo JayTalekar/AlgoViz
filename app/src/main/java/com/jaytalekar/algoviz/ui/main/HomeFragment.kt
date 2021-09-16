@@ -19,6 +19,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var tvDataStructures: TextView
     private lateinit var tvSearchSort: TextView
+    private lateinit var tvPathfinding: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +43,12 @@ class HomeFragment : Fragment() {
         tvSearchSort.setOnClickListener {
             Navigation.findNavController(rootView)
                 .navigate(R.id.action_homeFragment_to_searchingSorting)
+        }
+
+        tvPathfinding = rootView.findViewById(R.id.tv_pathfinding)
+        tvPathfinding.setOnClickListener {
+            Navigation.findNavController(rootView)
+                .navigate(R.id.action_homeFragment_to_pathfindingFragment)
         }
 
     }

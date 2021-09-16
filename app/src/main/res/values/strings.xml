@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AlgoViz</string>
+    <string name="app_name" translatable="false">AlgoViz</string>
     <string name="graph">Graph</string>
     <string name="pathfinding">Pathfinding</string>
     <string name="data_structures">Data Structures</string>
@@ -22,4 +22,7 @@
     <string name="linear_search">Linear Search</string>
     <string name="binary_search">Binary Search</string>
     <string name="search">Search</string>
+
+    <string name="select_starting_point">Select Starting Point</string>
+    <string name="select_destination_point">Select Destination Point</string>
 </resources>
