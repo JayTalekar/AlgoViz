@@ -34,6 +34,8 @@ class GridView @JvmOverloads constructor(
         val DEFAULT_BLOCKED_COLOR = Color.parseColor("#720F08") //barn red
         val DEFAULT_VISITED_COLOR = Color.parseColor("#708D81") // xanadu
         val DEFAULT_SOLUTION_COLOR = Color.parseColor("#724E91") // royal purple
+
+        const val DEFAULT_CELL_ANIMATION_DURATION = 500L
     }
 
     /**
@@ -190,7 +192,7 @@ class GridView @JvmOverloads constructor(
 
         ValueAnimator().apply {
             setValues(colorProperty)
-            duration = 200
+            duration = DEFAULT_CELL_ANIMATION_DURATION
             addUpdateListener {
                 val colorValue = it.getAnimatedValue("color") as Int
                 nColorItems.forEach { gridItem ->

@@ -31,7 +31,9 @@ class AStarRunner(grid: Array<Array<NodeType>>) : PathfindingRunner(grid) {
             }
 
             for (neighbour in findNeighbours(node.position)) {
-                if (grid[neighbour.first][neighbour.second] == NodeType.Blocked)
+                if (grid[neighbour.first][neighbour.second] == NodeType.Blocked ||
+                    grid[neighbour.first][neighbour.second] == NodeType.Visited
+                )
                     continue
 
                 val nodeCost = costs[node.position.first][node.position.second] + 1
@@ -47,8 +49,10 @@ class AStarRunner(grid: Array<Array<NodeType>>) : PathfindingRunner(grid) {
                         )
                     )
 
-                    if (neighbour != destination)
+                    if (neighbour != destination) {
                         orderedVisitedNodes.add(neighbour)
+                        grid[neighbour.first][neighbour.second] = NodeType.Visited
+                    }
                 }
 
             }

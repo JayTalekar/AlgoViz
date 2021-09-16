@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.jaytalekar.algoviz.R
 
 class PathfindingFragment : Fragment() {
@@ -21,6 +21,11 @@ class PathfindingFragment : Fragment() {
 
     private lateinit var gridView: GridView
     private lateinit var tvPrompt: TextView
+    private lateinit var ivPlayPause: ImageView
+
+    private var animationCompleted: Boolean = false
+    private var paused: Boolean = false
+    private var playing: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +37,43 @@ class PathfindingFragment : Fragment() {
 
         viewModel = PathfindingViewModel()
 
-        viewModel.sourceCell.observe(viewLifecycleOwner, Observer { coordinate ->
+        viewModel.sourceCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateSourceCell(coordinate)
             showDestinationLabel()
         })
 
-        viewModel.destinationCell.observe(viewLifecycleOwner, Observer { coordinate ->
+        viewModel.destinationCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateDestinationCell(coordinate)
             hideLabel()
+            showPlayPauseBtn()
         })
 
-        viewModel.blockedCell.observe(viewLifecycleOwner, Observer { coordinate ->
+        viewModel.blockedCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateBlockedCell(coordinate)
+        })
+
+        viewModel.visitedCell.observe(viewLifecycleOwner, { coordinate ->
+            gridView.animateVisitedCells(coordinate)
+        })
+
+        viewModel.solutionCell.observe(viewLifecycleOwner, { coordinate ->
+            gridView.animateSolutionCells(coordinate)
+        })
+
+        viewModel.algorithmAnimating.observe(viewLifecycleOwner, {
+            animationCompleted = !it
+            if (it) showPauseIcon()
+            else {
+                showPlayIcon()
+
+                viewModel.animateSolutionCells()
+            }
+        })
+
+        viewModel.cost.observe(viewLifecycleOwner, { cost ->
+            hidePlayPauseBtn()
+            showLabel()
+            showCostLabel(cost)
         })
 
         return rootView
@@ -53,6 +83,13 @@ class PathfindingFragment : Fragment() {
     private fun init() {
         gridView = rootView.findViewById(R.id.grid_view)
         tvPrompt = rootView.findViewById(R.id.tv_prompt)
+        ivPlayPause = rootView.findViewById(R.id.btn_play_pause)
+        ivPlayPause.setOnClickListener {
+            when {
+                playing -> onPlayClicked()
+                paused -> onPauseClicked()
+            }
+        }
 
         gridView.onGridCellStartTouch = { coordinate ->
             viewModel.onCellStartTouch(coordinate)
@@ -67,11 +104,54 @@ class PathfindingFragment : Fragment() {
         }
     }
 
+    private fun showSourceLabel() {
+        tvPrompt.text = resources.getString(R.string.select_starting_point)
+    }
+
     private fun showDestinationLabel() {
         tvPrompt.text = resources.getString(R.string.select_destination_point)
+    }
+
+    private fun showCostLabel(cost: Int) {
+        tvPrompt.text = resources.getString(R.string.solution_cost) + " " + cost.toString()
     }
 
     private fun hideLabel() {
         tvPrompt.visibility = View.INVISIBLE
     }
+
+    private fun showLabel() {
+        tvPrompt.visibility = View.VISIBLE
+    }
+
+    private fun showPlayPauseBtn() {
+        ivPlayPause.visibility = View.VISIBLE
+    }
+
+    private fun hidePlayPauseBtn() {
+        ivPlayPause.visibility = View.GONE
+    }
+
+    private fun onPlayClicked() {
+        if (!animationCompleted) {
+            showPauseIcon()
+            paused = true
+            playing = false
+            viewModel.onPlayClicked()
+        }
+    }
+
+    private fun showPauseIcon() = ivPlayPause.setImageResource(android.R.drawable.ic_media_pause)
+
+    private fun onPauseClicked() {
+        if (!animationCompleted) {
+            showPlayIcon()
+            paused = false
+            playing = true
+            viewModel.onPauseClicked()
+        }
+    }
+
+    private fun showPlayIcon() = ivPlayPause.setImageResource(android.R.drawable.ic_media_play)
+
 }

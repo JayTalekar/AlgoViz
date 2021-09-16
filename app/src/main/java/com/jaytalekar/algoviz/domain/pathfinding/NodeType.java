@@ -4,5 +4,6 @@ public enum NodeType {
     Empty,
     Source,
     Destination,
-    Blocked
+    Blocked,
+    Visited
 }
