@@ -63,10 +63,16 @@ class PathfindingFragment : Fragment() {
         viewModel.algorithmAnimating.observe(viewLifecycleOwner, {
             animationCompleted = !it
             if (it) showPauseIcon()
-            else {
-                showPlayIcon()
+            else showPlayIcon()
+        })
 
+        viewModel.destinationReached.observe(viewLifecycleOwner, {
+            if (it && animationCompleted) {
                 viewModel.animateSolutionCells()
+            } else {
+                hidePlayPauseBtn()
+                showLabel()
+                showDestinationNotReachedLabel()
             }
         })
 
@@ -112,8 +118,12 @@ class PathfindingFragment : Fragment() {
         tvPrompt.text = resources.getString(R.string.select_destination_point)
     }
 
-    private fun showCostLabel(cost: Int) {
-        tvPrompt.text = resources.getString(R.string.solution_cost) + " " + cost.toString()
+    private fun showCostLabel(cost: Float) {
+        tvPrompt.text = resources.getString(R.string.solution_cost) + " " + "%.2f".format(cost)
+    }
+
+    private fun showDestinationNotReachedLabel() {
+        tvPrompt.text = resources.getString(R.string.destination_unreachable)
     }
 
     private fun hideLabel() {

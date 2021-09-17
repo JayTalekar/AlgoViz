@@ -11,9 +11,11 @@ abstract class PathfindingRunner(grid: Array<Array<NodeType>>) {
 
     lateinit var visitedNodes: Array<Array<Boolean>>
 
+    var diagonalEnabled: Boolean = false
+
     var solution: List<Pair<Int, Int>> = ArrayList()
 
-    var solutionCost: Int = -1
+    var solutionCost: Float = -1f
 
     var orderedVisitedNodes: MutableList<Pair<Int, Int>> = ArrayList()
 
@@ -50,8 +52,9 @@ abstract class PathfindingRunner(grid: Array<Array<NodeType>>) {
             sol.add(reversedSol.pop())
 
         this.solution = sol
-        this.solutionCost = node.cost
     }
+
+    abstract fun findSolutionCost()
 
     fun clearVisited() {
         for (i in visitedNodes.indices)
@@ -61,16 +64,31 @@ abstract class PathfindingRunner(grid: Array<Array<NodeType>>) {
 
     fun findNeighbours(pos: Pair<Int, Int>): List<Pair<Int, Int>> {
         val neighbours = mutableListOf<Pair<Int, Int>>()
-        val horizontalDir = listOf<Int>(0, 0, -1, 1)
-        val verticalDir = listOf<Int>(-1, 1, 0, 0)
+        if (diagonalEnabled) {
+            val horizontalDir = listOf<Int>(0, 0, -1, 1, -1, 1, 1, -1)
+            val verticalDir = listOf<Int>(-1, 1, 0, 0, -1, 1, -1, 1)
 
-        for (h in horizontalDir.indices) {
-            val x = pos.first + horizontalDir[h]
-            val y = pos.second + verticalDir[h]
+            for (h in horizontalDir.indices) {
+                val x = pos.first + horizontalDir[h]
+                val y = pos.second + verticalDir[h]
 
-            if (x >= grid.size || x < 0 || y >= grid[x].size || y < 0) continue
+                if (x >= grid.size || x < 0 || y >= grid[x].size || y < 0) continue
 
-            neighbours.add(Pair(x, y))
+                neighbours.add(Pair(x, y))
+            }
+
+        } else {
+            val horizontalDir = listOf<Int>(0, 0, -1, 1)
+            val verticalDir = listOf<Int>(-1, 1, 0, 0)
+
+            for (h in horizontalDir.indices) {
+                val x = pos.first + horizontalDir[h]
+                val y = pos.second + verticalDir[h]
+
+                if (x >= grid.size || x < 0 || y >= grid[x].size || y < 0) continue
+
+                neighbours.add(Pair(x, y))
+            }
         }
 
         return neighbours

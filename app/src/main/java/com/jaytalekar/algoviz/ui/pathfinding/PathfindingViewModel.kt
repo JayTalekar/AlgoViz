@@ -26,7 +26,7 @@ class PathfindingViewModel : ViewModel() {
     val algorithmAnimating: LiveData<Boolean>
         get() = _algorithmAnimating
 
-    private var _destinationReached: MutableLiveData<Boolean> = MutableLiveData(false)
+    private var _destinationReached: MutableLiveData<Boolean> = MutableLiveData()
     val destinationReached: LiveData<Boolean>
         get() = _destinationReached
 
@@ -50,8 +50,8 @@ class PathfindingViewModel : ViewModel() {
     val destinationCell: LiveData<Pair<Int, Int>>
         get() = _destinationCell
 
-    private var _cost: MutableLiveData<Int> = MutableLiveData()
-    val cost: LiveData<Int>
+    private var _cost: MutableLiveData<Float> = MutableLiveData()
+    val cost: LiveData<Float>
         get() = _cost
 
     private var sourcePlacement: Boolean = true
@@ -121,20 +121,19 @@ class PathfindingViewModel : ViewModel() {
 
     private fun runAlgorithm() {
         runner = AStarRunner(grid)
+        (runner as AStarRunner).apply {
+            heuristic = AStarRunner.Heuristic.Octile
+            diagonalEnabled = true
+        }
+
 
         viewModelScope.launch {
             withContext(defaultDispatcher) {
 
                 runner!!.run(sourceCell.value!!, destinationCell.value!!)
 
-                _destinationReached.postValue(runner!!.destinationReached)
-
                 visitedCells.addAll(runner!!.orderedVisitedNodes)
                 solutionCells.addAll(runner!!.solution)
-
-                // Removing source and destination cells from list to avoid animating them
-                solutionCells.removeAt(0)
-                solutionCells.removeAt(solutionCells.size - 1)
 
                 moveForward()
             }
@@ -161,11 +160,15 @@ class PathfindingViewModel : ViewModel() {
                 }
 
                 _algorithmAnimating.postValue(false)
+                _destinationReached.postValue(runner!!.destinationReached)
             }
         }
     }
 
     fun animateSolutionCells() {
+        // Removing source and destination cells from list to avoid animating them
+        solutionCells.removeAt(0)
+        solutionCells.removeAt(solutionCells.size - 1)
 
         viewModelScope.launch {
             withContext(defaultDispatcher) {
