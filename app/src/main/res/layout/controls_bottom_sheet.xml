@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/controls_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@id/grid_view"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:orientation="vertical"
+    android:background="@drawable/bottom_curves_shape"
+    android:elevation="8dp">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_chevron_up"
+        app:tint="@color/goldenrod" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/btn_play_pause"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="42dp"
+            android:background="@drawable/bg_hollow_border"
+            android:src="@android:drawable/ic_media_play" />
+
+        <SeekBar
+            android:id="@+id/animation_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="center"
+            android:progress="0"
+            android:thumbTint="@color/royal_purple"
+            android:progressTint="@color/royal_purple" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_algo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="42dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/algorithm"
+            android:textColor="@color/royal_purple"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/algo_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_heuristics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="42dp"
+            android:fontFamily="@font/montserrat"
+            android:text="@string/heuristics"
+            android:textColor="@color/royal_purple"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/heuristics_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
+        android:text="@string/reset"
+        android:textSize="32sp"
+        android:textColor="@color/royal_purple"
+        android:fontFamily="@font/montserrat"
+        android:background="@drawable/bg_light_border" />
+
+</LinearLayout>

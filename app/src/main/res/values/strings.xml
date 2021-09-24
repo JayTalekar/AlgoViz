@@ -27,4 +27,20 @@
     <string name="select_destination_point">Select Destination Point</string>
     <string name="solution_cost">Solution Cost:</string>
     <string name="destination_unreachable">Destination Unreachable</string>
+    <string name="algorithm">Algorithm</string>
+    <string name="heuristics">Heuristics</string>
+    <string name="reset">Reset</string>
+    <string-array name="pathfinding_algorithms">
+        <item>AStar</item>
+        <item>Best First Search</item>
+        <item>BFS</item>
+        <item>DFS</item>
+    </string-array>
+
+    <string-array name="pathfinding_heuristics">
+        <item>Manhattan</item>
+        <item>Octile</item>
+        <item>Chebyshev</item>
+        <item>Euclidean</item>
+    </string-array>
 </resources>

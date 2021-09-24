@@ -10,11 +10,15 @@
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_hollow_border.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_light_border.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bg_other_signin_options.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/bottom_curves_shape.xml" value="0.33" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/circle_shape_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/gradient_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/green_circle_shape_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_bar.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_chevron_down.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_chevron_up.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_element.xml" value="0.3828125" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/ic_stack_bucket.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/light_circle_shape_bg.xml" value="0.3828125" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/drawable/rounded_bar.xml" value="0.3828125" />
@@ -23,8 +27,11 @@
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/activity_search.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/activity_sorting.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/card.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/controls_bottom_sheet.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/custom_spinner_item.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/data_structures_fragment.xml" value="0.25" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_blank.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_controls_bottom_sheet.xml" value="0.35260416666666666" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_pathfinding.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_queue.xml" value="0.35260416666666666" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
@@ -38,7 +45,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

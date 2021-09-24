@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaytalekar.algoviz.domain.pathfinding.AStarRunner
+import com.jaytalekar.algoviz.domain.pathfinding.Algorithms
 import com.jaytalekar.algoviz.domain.pathfinding.NodeType
 import com.jaytalekar.algoviz.domain.pathfinding.PathfindingRunner
 import kotlinx.coroutines.*
@@ -13,26 +14,31 @@ class PathfindingViewModel : ViewModel() {
 
     private lateinit var grid: Array<Array<NodeType>>
 
+    private var algorithm: Algorithms = Algorithms.AStar
+    private var heuristic: AStarRunner.Heuristic = AStarRunner.Heuristic.Manhattan
     private var runner: PathfindingRunner? = null
 
-    private var visitedCells = mutableListOf<Pair<Int, Int>>()
-    private var solutionCells = mutableListOf<Pair<Int, Int>>()
+    private var visitedCellsList = mutableListOf<Pair<Int, Int>>()
+    private var solutionCellsList = mutableListOf<Pair<Int, Int>>()
 
-    private var currentVisitedIndex: Int = 0
 
     private var paused: Boolean = false
-
-    private var _algorithmAnimating: MutableLiveData<Boolean> = MutableLiveData()
-    val algorithmAnimating: LiveData<Boolean>
-        get() = _algorithmAnimating
 
     private var _destinationReached: MutableLiveData<Boolean> = MutableLiveData()
     val destinationReached: LiveData<Boolean>
         get() = _destinationReached
 
-    private var _visitedCell: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
-    val visitedCell: LiveData<Pair<Int, Int>>
-        get() = _visitedCell
+    private var _numVisitedCells: MutableLiveData<Int> = MutableLiveData()
+    val numVisitedCells: LiveData<Int>
+        get() = _numVisitedCells
+
+    private var _currentVisitedIndex: MutableLiveData<Int> = MutableLiveData(0)
+    val currentVisitedIndex: LiveData<Int>
+        get() = _currentVisitedIndex
+
+    private var _visitedCells: MutableLiveData<List<Pair<Int, Int>>> = MutableLiveData()
+    val visitedCells: LiveData<List<Pair<Int, Int>>>
+        get() = _visitedCells
 
     private var _solutionCell: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
     val solutionCell: LiveData<Pair<Int, Int>>
@@ -102,10 +108,9 @@ class PathfindingViewModel : ViewModel() {
 
     fun onPlayClicked() {
         this.disableBlockPlacement()
-        if (runner == null) {
-            runAlgorithm()
-            paused = false
-        } else {
+        viewModelScope.launch {
+            if (visitedCellsList.size == 0)
+                runAlgorithm()
             paused = false
             moveForward()
         }
@@ -119,61 +124,96 @@ class PathfindingViewModel : ViewModel() {
         blockPlacement = false
     }
 
-    private fun runAlgorithm() {
-        runner = AStarRunner(grid)
-        (runner as AStarRunner).apply {
-            heuristic = AStarRunner.Heuristic.Octile
-            diagonalEnabled = true
+    fun setupAlgorithm(algorithm: Algorithms) {
+        this.algorithm = algorithm
+    }
+
+    fun setupHeuristics(heuristic: AStarRunner.Heuristic) {
+        this.heuristic = heuristic
+    }
+
+    fun setupRunner() {
+
+        runner = when (algorithm) {
+            Algorithms.AStar -> AStarRunner(grid)
+            Algorithms.BestFirstSearch -> AStarRunner(grid)
+            Algorithms.BFS -> AStarRunner(grid)
+            Algorithms.DFS -> AStarRunner(grid)
         }
 
-
-        viewModelScope.launch {
-            withContext(defaultDispatcher) {
-
-                runner!!.run(sourceCell.value!!, destinationCell.value!!)
-
-                visitedCells.addAll(runner!!.orderedVisitedNodes)
-                solutionCells.addAll(runner!!.solution)
-
-                moveForward()
+        if (this.runner!!::class == AStarRunner::class) {
+            (runner as AStarRunner).apply {
+                this.heuristic = this@PathfindingViewModel.heuristic
+                this.diagonalEnabled = when (heuristic) {
+                    AStarRunner.Heuristic.Manhattan -> false
+                    else -> true
+                }
             }
         }
     }
 
-    private fun moveForward() {
-        if (currentVisitedIndex + 1 >= visitedCells.size)
+    private suspend fun runAlgorithm() {
+
+        withContext(defaultDispatcher) {
+            visitedCellsList.clear()
+            solutionCellsList.clear()
+
+            runner!!.run(sourceCell.value!!, destinationCell.value!!)
+
+            visitedCellsList.addAll(runner!!.orderedVisitedNodes)
+            solutionCellsList.addAll(runner!!.solution)
+
+            if (solutionCellsList.isNotEmpty()) {
+                // Removing source and destination cells from list to avoid animating them
+                solutionCellsList.removeFirst()
+                solutionCellsList.removeLast()
+            }
+
+            _numVisitedCells.postValue(visitedCellsList.size)
+        }
+    }
+
+    private suspend fun moveForward() {
+        if (_currentVisitedIndex.value!! + 1 >= visitedCellsList.size)
             return
 
-        viewModelScope.launch {
-            withContext(defaultDispatcher) {
-                _algorithmAnimating.postValue(true)
+        withContext(defaultDispatcher) {
 
-                for (i in currentVisitedIndex until visitedCells.size) {
-                    currentVisitedIndex = i
+            for (i in _currentVisitedIndex.value!! until visitedCellsList.size) {
+                _currentVisitedIndex.postValue(i)
 
-                    if (!paused) {
-                        _visitedCell.postValue(visitedCells[i])
+                if (!paused) {
+                    _visitedCells.postValue((listOf(visitedCellsList[i])))
 
-                        delay(250)
-                    } else return@withContext
+                    delay(250)
+                } else return@withContext
 
-                }
-
-                _algorithmAnimating.postValue(false)
-                _destinationReached.postValue(runner!!.destinationReached)
             }
+
+            _destinationReached.postValue(runner!!.destinationReached)
         }
+
+    }
+
+    fun moveForwardTo(index: Int) {
+        if (_currentVisitedIndex.value!! > index)
+            return
+
+        val forwardList = mutableListOf<Pair<Int, Int>>()
+        for (i in currentVisitedIndex.value!!..index)
+            forwardList.add(visitedCellsList[i])
+
+        _visitedCells.value = forwardList
+        _currentVisitedIndex.value = index
+
     }
 
     fun animateSolutionCells() {
-        // Removing source and destination cells from list to avoid animating them
-        solutionCells.removeAt(0)
-        solutionCells.removeAt(solutionCells.size - 1)
 
         viewModelScope.launch {
             withContext(defaultDispatcher) {
 
-                solutionCells.forEach { coordinate ->
+                solutionCellsList.forEach { coordinate ->
                     _solutionCell.postValue(coordinate)
 
                     delay(200)
