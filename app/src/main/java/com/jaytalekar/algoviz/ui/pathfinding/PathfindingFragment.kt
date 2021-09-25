@@ -75,6 +75,10 @@ class PathfindingFragment : Fragment() {
             gridView.animateVisitedCells(*coordinates.toTypedArray())
         })
 
+        viewModel.removedVisitedCells.observe(viewLifecycleOwner, { coordinates ->
+            gridView.animateRemoveVisitedCells(*coordinates.toTypedArray())
+        })
+
         viewModel.solutionCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateSolutionCells(coordinate)
         })
@@ -97,7 +101,7 @@ class PathfindingFragment : Fragment() {
         })
 
         viewModel.numVisitedCells.observe(viewLifecycleOwner, { numVisitedCells ->
-            animationSeekBar.max = numVisitedCells
+            animationSeekBar.max = numVisitedCells - 1
         })
 
         viewModel.currentVisitedIndex.observe(viewLifecycleOwner, { currentIndex ->
@@ -197,7 +201,7 @@ class PathfindingFragment : Fragment() {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             if (fromUser) {
                 onPauseClicked()
-                viewModel.moveForwardTo(progress - 1)
+                viewModel.onSeekBarChanged(progress)
                 if (progress == seekBar.max)
                     viewModel.animateSolutionCells()
             }
@@ -309,6 +313,7 @@ class PathfindingFragment : Fragment() {
         playing = false
         viewModel.onPlayClicked()
         showAnimationSeekBar()
+        collapseBottomSheet()
     }
 
     private fun showPauseIcon() = ivPlayPause.setImageResource(android.R.drawable.ic_media_pause)
@@ -316,6 +321,13 @@ class PathfindingFragment : Fragment() {
     private fun showAnimationSeekBar() {
         if (animationSeekBar.visibility == View.INVISIBLE)
             animationSeekBar.visibility = View.VISIBLE
+    }
+
+    private fun collapseBottomSheet() {
+        bottomSheetBehavior.isDraggable = false
+        if (!bottomSheetCollapsed)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        else return
     }
 
     private fun onPauseClicked() {

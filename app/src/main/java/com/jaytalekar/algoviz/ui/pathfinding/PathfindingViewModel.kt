@@ -40,6 +40,10 @@ class PathfindingViewModel : ViewModel() {
     val visitedCells: LiveData<List<Pair<Int, Int>>>
         get() = _visitedCells
 
+    private var _removedVisitedCells: MutableLiveData<List<Pair<Int, Int>>> = MutableLiveData()
+    val removedVisitedCells: LiveData<List<Pair<Int, Int>>>
+        get() = _removedVisitedCells
+
     private var _solutionCell: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
     val solutionCell: LiveData<Pair<Int, Int>>
         get() = _solutionCell
@@ -195,7 +199,14 @@ class PathfindingViewModel : ViewModel() {
 
     }
 
-    fun moveForwardTo(index: Int) {
+    fun onSeekBarChanged(index: Int) {
+        if (index > currentVisitedIndex.value!!)
+            moveForwardTo(index)
+        else if (index < currentVisitedIndex.value!!)
+            moveBackwardTo(index)
+    }
+
+    private fun moveForwardTo(index: Int) {
         if (_currentVisitedIndex.value!! > index)
             return
 
@@ -206,6 +217,18 @@ class PathfindingViewModel : ViewModel() {
         _visitedCells.value = forwardList
         _currentVisitedIndex.value = index
 
+    }
+
+    private fun moveBackwardTo(index: Int) {
+        if (currentVisitedIndex.value!! < index)
+            return
+
+        val backwardList = mutableListOf<Pair<Int, Int>>()
+        for (i in index..currentVisitedIndex.value!!)
+            backwardList.add(visitedCellsList[i])
+
+        _removedVisitedCells.value = backwardList
+        _currentVisitedIndex.value = index
     }
 
     fun animateSolutionCells() {

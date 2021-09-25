@@ -1,8 +1,6 @@
 package com.jaytalekar.algoviz.ui.pathfinding
 
-import android.animation.ArgbEvaluator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.*
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -28,7 +26,7 @@ class GridView @JvmOverloads constructor(
         const val DEFAULT_CELL_CORNER_RADIUS = 16
 
         val DEFAULT_CELL_COLOR = Color.parseColor("#E0E0E0")
-        val DEFAULT_TRANSITION_COLOR = Color.parseColor("#FFF04C7F")
+        val DEFAULT_TRANSITION_COLOR = Color.parseColor("#EC4E20") //flame
         val DEFAULT_SOURCE_COLOR = Color.parseColor("#E9AD20")// goldenrod
         val DEFAULT_DESTINATION_COLOR = Color.parseColor("#B83D87") // fandango
         val DEFAULT_BLOCKED_COLOR = Color.parseColor("#720F08") //barn red
@@ -57,6 +55,11 @@ class GridView @JvmOverloads constructor(
      * A list to store data for colored cells
      */
     private var colorItems = mutableListOf<GridItem>()
+
+    /**
+     * A list to store data for cells of which color is to be removed
+     */
+    private var removedColorItems = mutableListOf<GridItem>()
 
     /**
      * A list to store data for the solution cells
@@ -186,12 +189,15 @@ class GridView @JvmOverloads constructor(
         val colorProperty = PropertyValuesHolder.ofObject(
             "color",
             ArgbEvaluator(),
-            startColor,
-            endColor
-        )
+            startColor
+        ).apply {
+            if (endColor == DEFAULT_VISITED_COLOR || endColor == DEFAULT_SOLUTION_COLOR)
+                setIntValues(DEFAULT_TRANSITION_COLOR, endColor)
+            else
+                setIntValues(endColor)
+        }
 
-        ValueAnimator().apply {
-            setValues(colorProperty)
+        ObjectAnimator.ofPropertyValuesHolder(colorProperty).apply {
             duration = DEFAULT_CELL_ANIMATION_DURATION
             addUpdateListener {
                 val colorValue = it.getAnimatedValue("color") as Int
@@ -223,6 +229,56 @@ class GridView @JvmOverloads constructor(
 
     fun animateSolutionCells(vararg cells: Pair<Int, Int>) {
         animateCellColors(solutionCells, DEFAULT_VISITED_COLOR, DEFAULT_SOLUTION_COLOR, *cells)
+    }
+
+    private fun animateRemoveCellColors(
+        currentColor: Int,
+        vararg cells: Pair<Int, Int>
+    ) {
+        colorItems.removeAll { item ->
+            cells.firstOrNull { item.i == it.first && item.j == it.second } != null
+        }
+
+        val items = cells.map {
+            GridItem(
+                it.first,
+                it.second,
+                currentColor,
+                DEFAULT_CELL_CORNER_RADIUS
+            )
+        }
+
+        removedColorItems.addAll(items)
+
+        val colorProperty = PropertyValuesHolder.ofObject(
+            "color",
+            ArgbEvaluator(),
+            currentColor,
+            DEFAULT_CELL_COLOR
+        )
+
+        ObjectAnimator.ofPropertyValuesHolder(colorProperty).apply {
+            duration = DEFAULT_CELL_ANIMATION_DURATION
+            interpolator = AccelerateInterpolator()
+            addUpdateListener {
+                val colorValue = it.getAnimatedValue("color") as Int
+                items.forEach { gridItem ->
+                    gridItem.color = colorValue
+                }
+
+                invalidate()
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                    removedColorItems.removeAll(items)
+                }
+            })
+        }.start()
+
+    }
+
+    fun animateRemoveVisitedCells(vararg cells: Pair<Int, Int>) {
+        animateRemoveCellColors(DEFAULT_VISITED_COLOR, *cells)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
