@@ -34,6 +34,7 @@ class PathfindingFragment : Fragment() {
     private lateinit var ivPlayPause: ImageView
     private lateinit var animationSeekBar: SeekBar
     private lateinit var algorithmSpinner: Spinner
+    private lateinit var llHeuristic: LinearLayout
     private lateinit var heuristicSpinner: Spinner
     private lateinit var tvReset: TextView
 
@@ -167,6 +168,8 @@ class PathfindingFragment : Fragment() {
         }
         algorithmSpinner.onItemSelectedListener = algoItemSelectedListener
 
+        llHeuristic = rootView.findViewById(R.id.ll_heuristic)
+
         heuristicSpinner = rootView.findViewById(R.id.heuristics_spinner)
         ArrayAdapter.createFromResource(
             this.requireContext(),
@@ -226,10 +229,10 @@ class PathfindingFragment : Fragment() {
             )
 
             if (position == 2 || position == 3) {
-                heuristicSpinner.visibility = View.GONE
+                llHeuristic.visibility = View.GONE
                 viewModel.setupRunner()
             } else {
-                heuristicSpinner.visibility = View.VISIBLE
+                llHeuristic.visibility = View.VISIBLE
             }
         }
 
