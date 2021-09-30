@@ -2,7 +2,7 @@ package com.jaytalekar.algoviz.domain.pathfinding
 
 import java.util.*
 
-class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
+class GreedyBestFirstSearch(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
 
     override fun run(source: Pair<Int, Int>, destination: Pair<Int, Int>) {
         val costs = Array(grid.size) {
@@ -44,7 +44,7 @@ class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
                     queue.add(
                         GridNode(
                             neighbour,
-                            nodeCost + heuristics(neighbour, destination),
+                            heuristics(neighbour, destination),
                             node
                         )
                     )
@@ -58,4 +58,5 @@ class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
             }
         }
     }
+
 }

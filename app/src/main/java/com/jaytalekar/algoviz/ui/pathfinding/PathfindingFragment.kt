@@ -11,8 +11,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.jaytalekar.algoviz.R
-import com.jaytalekar.algoviz.domain.pathfinding.AStarRunner
 import com.jaytalekar.algoviz.domain.pathfinding.Algorithms
+import com.jaytalekar.algoviz.domain.pathfinding.InformedSearchRunner
 
 class PathfindingFragment : Fragment() {
 
@@ -202,8 +202,9 @@ class PathfindingFragment : Fragment() {
             if (fromUser) {
                 onPauseClicked()
                 viewModel.onSeekBarChanged(progress)
-                if (progress == seekBar.max)
-                    viewModel.animateSolutionCells()
+                if (progress == seekBar.max) {
+                    viewModel.updateDestinationStatus()
+                }
             }
         }
 
@@ -217,9 +218,9 @@ class PathfindingFragment : Fragment() {
             viewModel.setupAlgorithm(
                 when (position) {
                     0 -> Algorithms.AStar
-                    1 -> Algorithms.BestFirstSearch
+                    1 -> Algorithms.GreedyBestFirstSearch
                     2 -> Algorithms.BFS
-                    3 -> Algorithms.DFS
+                    3 -> Algorithms.Dijkstra
                     else -> Algorithms.AStar
                 }
             )
@@ -239,11 +240,11 @@ class PathfindingFragment : Fragment() {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             viewModel.setupHeuristics(
                 when (position) {
-                    0 -> AStarRunner.Heuristic.Manhattan
-                    1 -> AStarRunner.Heuristic.Octile
-                    2 -> AStarRunner.Heuristic.Chebyshev
-                    3 -> AStarRunner.Heuristic.Euclidean
-                    else -> AStarRunner.Heuristic.Manhattan
+                    0 -> InformedSearchRunner.Heuristic.Manhattan
+                    1 -> InformedSearchRunner.Heuristic.Octile
+                    2 -> InformedSearchRunner.Heuristic.Chebyshev
+                    3 -> InformedSearchRunner.Heuristic.Euclidean
+                    else -> InformedSearchRunner.Heuristic.Manhattan
                 }
             )
 

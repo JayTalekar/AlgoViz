@@ -2,16 +2,16 @@ package com.jaytalekar.algoviz.domain.pathfinding
 
 import java.util.*
 
-class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
+class DijkstraRunner(grid: Array<Array<NodeType>>) : PathfindingRunner(grid) {
 
     override fun run(source: Pair<Int, Int>, destination: Pair<Int, Int>) {
         val costs = Array(grid.size) {
-            Array(grid[it].size) { pos -> Float.MAX_VALUE }
+            Array(grid[0].size) { pos -> Float.MAX_VALUE }
         }
 
         costs[source.first][source.second] = 0f
 
-        val queue = PriorityQueue<GridNode>(30) { a, b ->
+        val queue = PriorityQueue<GridNode>(50) { a, b ->
             a.compareTo(b)
         }
 
@@ -36,17 +36,13 @@ class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
                 )
                     continue
 
-                val nodeCost = costs[node.position.first][node.position.second] + 1f
+                val neighbourCost = costs[node.position.first][node.position.second] + 1f
 
-                if (nodeCost < costs[neighbour.first][neighbour.second]) {
-                    costs[neighbour.first][neighbour.second] = nodeCost
+                if (neighbourCost < costs[neighbour.first][neighbour.second]) {
+                    costs[neighbour.first][neighbour.second] = neighbourCost
 
                     queue.add(
-                        GridNode(
-                            neighbour,
-                            nodeCost + heuristics(neighbour, destination),
-                            node
-                        )
+                        GridNode(neighbour, neighbourCost, node)
                     )
 
                     if (neighbour != destination) {
@@ -54,8 +50,17 @@ class AStarRunner(grid: Array<Array<NodeType>>) : InformedSearchRunner(grid) {
                         grid[neighbour.first][neighbour.second] = NodeType.Visited
                     }
                 }
-
             }
         }
+    }
+
+    override fun findSolutionCost() {
+        var solCost = 0f
+
+        for (i in 0 until this.solution.size - 1) {
+            solCost += 1
+        }
+
+        this.solutionCost = solCost
     }
 }

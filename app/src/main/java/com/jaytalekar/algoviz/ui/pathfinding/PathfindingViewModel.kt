@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jaytalekar.algoviz.domain.pathfinding.AStarRunner
-import com.jaytalekar.algoviz.domain.pathfinding.Algorithms
-import com.jaytalekar.algoviz.domain.pathfinding.NodeType
-import com.jaytalekar.algoviz.domain.pathfinding.PathfindingRunner
+import com.jaytalekar.algoviz.domain.pathfinding.*
 import kotlinx.coroutines.*
 
 class PathfindingViewModel : ViewModel() {
@@ -15,7 +12,7 @@ class PathfindingViewModel : ViewModel() {
     private lateinit var grid: Array<Array<NodeType>>
 
     private var algorithm: Algorithms = Algorithms.AStar
-    private var heuristic: AStarRunner.Heuristic = AStarRunner.Heuristic.Manhattan
+    private var heuristic: InformedSearchRunner.Heuristic = InformedSearchRunner.Heuristic.Manhattan
     private var runner: PathfindingRunner? = null
 
     private var visitedCellsList = mutableListOf<Pair<Int, Int>>()
@@ -132,7 +129,7 @@ class PathfindingViewModel : ViewModel() {
         this.algorithm = algorithm
     }
 
-    fun setupHeuristics(heuristic: AStarRunner.Heuristic) {
+    fun setupHeuristics(heuristic: InformedSearchRunner.Heuristic) {
         this.heuristic = heuristic
     }
 
@@ -140,18 +137,17 @@ class PathfindingViewModel : ViewModel() {
 
         runner = when (algorithm) {
             Algorithms.AStar -> AStarRunner(grid)
-            Algorithms.BestFirstSearch -> AStarRunner(grid)
-            Algorithms.BFS -> AStarRunner(grid)
-            Algorithms.DFS -> AStarRunner(grid)
+            Algorithms.GreedyBestFirstSearch -> GreedyBestFirstSearch(grid)
+            Algorithms.BFS -> BFSRunner(grid)
+            Algorithms.Dijkstra -> DijkstraRunner(grid)
         }
 
-        if (this.runner!!::class == AStarRunner::class) {
-            (runner as AStarRunner).apply {
+        if (this.runner!!::class == AStarRunner::class ||
+            this.runner!!::class == GreedyBestFirstSearch::class
+        ) {
+            (runner as InformedSearchRunner).apply {
                 this.heuristic = this@PathfindingViewModel.heuristic
-                this.diagonalEnabled = when (heuristic) {
-                    AStarRunner.Heuristic.Manhattan -> false
-                    else -> true
-                }
+                diagonalEnabled = heuristic != InformedSearchRunner.Heuristic.Manhattan
             }
         }
     }
@@ -245,5 +241,9 @@ class PathfindingViewModel : ViewModel() {
 
             _cost.value = runner!!.solutionCost
         }
+    }
+
+    fun updateDestinationStatus() {
+        _destinationReached.value = runner!!.destinationReached
     }
 }
