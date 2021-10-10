@@ -43,4 +43,7 @@
         <item>Chebyshev</item>
         <item>Euclidean</item>
     </string-array>
+
+    <string name="shortest_path">Shortest Path</string>
+    <string name="graph_traversal">Graph Traversal</string>
 </resources>

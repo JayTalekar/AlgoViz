@@ -24,6 +24,11 @@
             app:destination="@id/pathfindingFragment"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_graphFragment"
+            app:destination="@id/graphFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/dataStructures"
@@ -82,4 +87,30 @@
         android:name="com.jaytalekar.algoviz.ui.pathfinding.PathfindingFragment"
         android:label="fragment_pathfinding"
         tools:layout="@layout/fragment_pathfinding" />
+    <fragment
+        android:id="@+id/graphFragment"
+        android:name="com.jaytalekar.algoviz.ui.main.GraphFragment"
+        android:label="fragment_graph"
+        tools:layout="@layout/fragment_graph">
+        <action
+            android:id="@+id/action_graphFragment_to_graphTraversalFragment"
+            app:destination="@id/graphTraversalFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_graphFragment_to_shortestPathFragment"
+            app:destination="@id/shortestPathFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/graphTraversalFragment"
+        android:name="com.jaytalekar.algoviz.ui.graph.GraphTraversalFragment"
+        android:label="fragment_graph_traversal"
+        tools:layout="@layout/fragment_graph_traversal" />
+    <fragment
+        android:id="@+id/shortestPathFragment"
+        android:name="com.jaytalekar.algoviz.ui.graph.ShortestPathFragment"
+        android:label="fragment_shortest_path"
+        tools:layout="@layout/fragment_shortest_path" />
 </navigation>

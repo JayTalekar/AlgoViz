@@ -32,10 +32,13 @@
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/data_structures_fragment.xml" value="0.25" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_blank.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_controls_bottom_sheet.xml" value="0.35260416666666666" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_graph.xml" value="0.36666666666666664" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_graph_traversal.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_pathfinding.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_queue.xml" value="0.35260416666666666" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_searching_sorting.xml" value="0.33" />
+        <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_shortest_path.xml" value="0.36666666666666664" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/fragment_sorting.xml" value="0.33" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/home_fragment.xml" value="0.33" />
         <entry key="..\:/BE Project/AlgoViz/app/src/main/res/layout/main_activity.xml" value="0.36666666666666664" />
