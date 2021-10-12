@@ -29,7 +29,10 @@ class PathfindingFragment : Fragment() {
     private lateinit var viewModel: PathfindingViewModel
 
     private lateinit var gridView: GridView
+
+    private lateinit var llPrompt: LinearLayout
     private lateinit var tvPrompt: TextView
+    private lateinit var ivClearBtn: ImageView
 
     private lateinit var ivPlayPause: ImageView
     private lateinit var animationSeekBar: SeekBar
@@ -64,12 +67,16 @@ class PathfindingFragment : Fragment() {
 
         viewModel.destinationCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateDestinationCell(coordinate)
-            showHideLabel(false)
+            showHidePrompt(false)
             showHideControls(true)
         })
 
         viewModel.blockedCell.observe(viewLifecycleOwner, { coordinate ->
             gridView.animateBlockedCell(coordinate)
+        })
+
+        viewModel.removedBlockedCells.observe(viewLifecycleOwner, { coordinates ->
+            gridView.animateRemoveBlockedCells(*coordinates.toTypedArray())
         })
 
         viewModel.visitedCells.observe(viewLifecycleOwner, { coordinates ->
@@ -84,21 +91,27 @@ class PathfindingFragment : Fragment() {
             gridView.animateSolutionCells(coordinate)
         })
 
+        viewModel.removedSolutionCells.observe(viewLifecycleOwner, { coordinates ->
+            gridView.animateRemoveSolutionCells(*coordinates.toTypedArray())
+        })
+
         viewModel.destinationReached.observe(viewLifecycleOwner, { destinationReached ->
             this.destinationReached = destinationReached
             if (destinationReached) {
                 viewModel.animateSolutionCells()
             } else {
                 showHideControls(false)
-                showHideLabel(true)
+                showHidePrompt(true)
                 showDestinationNotReachedLabel()
             }
         })
 
         viewModel.cost.observe(viewLifecycleOwner, { cost ->
-            showHideControls(false)
-            showHideLabel(true)
-            showCostLabel(cost)
+            if (cost != 0f) {
+                showHideControls(false)
+                showHidePrompt(true)
+                showCostLabel(cost)
+            }
         })
 
         viewModel.numVisitedCells.observe(viewLifecycleOwner, { numVisitedCells ->
@@ -114,7 +127,16 @@ class PathfindingFragment : Fragment() {
 
     private fun setupGrid() {
         gridView = rootView.findViewById(R.id.grid_view)
+
+        llPrompt = rootView.findViewById(R.id.ll_prompt)
         tvPrompt = rootView.findViewById(R.id.tv_prompt)
+        ivClearBtn = rootView.findViewById(R.id.iv_clear)
+
+        ivClearBtn.setOnClickListener {
+            viewModel.onClearClicked()
+            bottomSheetBehavior.isDraggable = true
+            showHideAnimationSeekBar(false)
+        }
 
         gridView.onGridCellStartTouch = { coordinate ->
             viewModel.onCellStartTouch(coordinate)
@@ -267,15 +289,17 @@ class PathfindingFragment : Fragment() {
 
     private fun showCostLabel(cost: Float) {
         tvPrompt.text = resources.getString(R.string.solution_cost) + " " + "%.2f".format(cost)
+        ivClearBtn.visibility = View.VISIBLE
     }
 
     private fun showDestinationNotReachedLabel() {
         tvPrompt.text = resources.getString(R.string.destination_unreachable)
+        ivClearBtn.visibility = View.VISIBLE
     }
 
-    private fun showHideLabel(show: Boolean) {
-        if (show) tvPrompt.visibility = View.VISIBLE
-        else tvPrompt.visibility = View.INVISIBLE
+    private fun showHidePrompt(show: Boolean) {
+        if (show) llPrompt.visibility = View.VISIBLE
+        else llPrompt.visibility = View.INVISIBLE
     }
 
     private fun showHideControls(show: Boolean) {
@@ -316,15 +340,16 @@ class PathfindingFragment : Fragment() {
         paused = true
         playing = false
         viewModel.onPlayClicked()
-        showAnimationSeekBar()
+        showHideAnimationSeekBar(true)
         collapseBottomSheet()
     }
 
     private fun showPauseIcon() = ivPlayPause.setImageResource(android.R.drawable.ic_media_pause)
 
-    private fun showAnimationSeekBar() {
-        if (animationSeekBar.visibility == View.INVISIBLE)
+    private fun showHideAnimationSeekBar(show: Boolean) {
+        if (show)
             animationSeekBar.visibility = View.VISIBLE
+        else animationSeekBar.visibility = View.INVISIBLE
     }
 
     private fun collapseBottomSheet() {

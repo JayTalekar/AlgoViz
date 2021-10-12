@@ -281,6 +281,15 @@ class GridView @JvmOverloads constructor(
         animateRemoveCellColors(DEFAULT_VISITED_COLOR, *cells)
     }
 
+    fun animateRemoveBlockedCells(vararg cells: Pair<Int, Int>) {
+        animateRemoveCellColors(DEFAULT_BLOCKED_COLOR, *cells)
+    }
+
+    fun animateRemoveSolutionCells(vararg cells: Pair<Int, Int>) {
+        animateRemoveCellColors(DEFAULT_SOLUTION_COLOR, *cells)
+        solutionCells.clear()
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         event?.let {

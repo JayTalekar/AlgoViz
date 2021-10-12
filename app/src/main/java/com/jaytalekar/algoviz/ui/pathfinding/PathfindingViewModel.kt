@@ -17,6 +17,7 @@ class PathfindingViewModel : ViewModel() {
 
     private var visitedCellsList = mutableListOf<Pair<Int, Int>>()
     private var solutionCellsList = mutableListOf<Pair<Int, Int>>()
+    private var blockedCellsList = mutableListOf<Pair<Int, Int>>()
 
 
     private var paused: Boolean = false
@@ -45,9 +46,17 @@ class PathfindingViewModel : ViewModel() {
     val solutionCell: LiveData<Pair<Int, Int>>
         get() = _solutionCell
 
+    private var _removedSolutionCells: MutableLiveData<List<Pair<Int, Int>>> = MutableLiveData()
+    val removedSolutionCells: LiveData<List<Pair<Int, Int>>>
+        get() = _removedSolutionCells
+
     private var _blockedCell: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
     val blockedCell: LiveData<Pair<Int, Int>>
         get() = _blockedCell
+
+    private var _removedBlockedCells: MutableLiveData<List<Pair<Int, Int>>> = MutableLiveData()
+    val removedBlockedCells: LiveData<List<Pair<Int, Int>>>
+        get() = _removedBlockedCells
 
     private var _sourceCell: MutableLiveData<Pair<Int, Int>> = MutableLiveData()
     val sourceCell: LiveData<Pair<Int, Int>>
@@ -102,6 +111,7 @@ class PathfindingViewModel : ViewModel() {
                 if (grid[x][y] == NodeType.Empty) {
                     grid[x][y] = NodeType.Blocked
                     _blockedCell.value = coordinate
+                    blockedCellsList.add(Pair(x, y))
                 }
             }
         }
@@ -119,6 +129,10 @@ class PathfindingViewModel : ViewModel() {
 
     fun onPauseClicked() {
         paused = true
+    }
+
+    private fun enableBlockPlacement() {
+        blockPlacement = true
     }
 
     private fun disableBlockPlacement() {
@@ -245,5 +259,39 @@ class PathfindingViewModel : ViewModel() {
 
     fun updateDestinationStatus() {
         _destinationReached.value = runner!!.destinationReached
+    }
+
+    fun onClearClicked() {
+        visitedCellsList.forEach {
+            grid[it.first][it.second] = NodeType.Empty
+        }
+        solutionCellsList.forEach {
+            grid[it.first][it.second] = NodeType.Empty
+        }
+        blockedCellsList.forEach {
+            grid[it.first][it.second] = NodeType.Empty
+        }
+        clearAllCells()
+        enableBlockPlacement()
+        _sourceCell.value = _sourceCell.value
+        _destinationCell.value = _destinationCell.value
+        _currentVisitedIndex.value = 0
+    }
+
+    private fun clearAllCells() {
+        viewModelScope.launch {
+            withContext(defaultDispatcher) {
+                _removedVisitedCells.postValue(visitedCellsList)
+
+                _removedSolutionCells.postValue(solutionCellsList)
+
+                _removedBlockedCells.postValue(blockedCellsList)
+            }
+
+            visitedCellsList.clear()
+            solutionCellsList.clear()
+            blockedCellsList.clear()
+        }
+
     }
 }
