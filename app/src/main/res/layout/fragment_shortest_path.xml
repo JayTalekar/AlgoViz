@@ -8,7 +8,6 @@
     tools:context=".ui.graph.ShortestPathFragment">
 
     <TextView
-        android:id="@+id/tv_graph_traversal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
