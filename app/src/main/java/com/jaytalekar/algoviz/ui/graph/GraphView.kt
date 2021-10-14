@@ -13,6 +13,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import com.jaytalekar.algoviz.R
+import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.sin
 
 class GraphView @JvmOverloads constructor(
     context: Context,
@@ -62,12 +65,32 @@ class GraphView @JvmOverloads constructor(
     }
     // Default Vertex Attributes End
 
+    private var draggingEdge: EdgeItem? = null
+    private var draggingEdgeStartVertex: VertexItem? = null
+
+    private var edgeItemList = mutableListOf<EdgeItem>()
+    private var numEdges: Int = 0
+
+    private var edgeColor = resources.getColor(R.color.barn_red)
+
+    private var edgePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = edgeColor
+        strokeWidth = 20f
+        elevation = 0f
+    }
+
+
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
 
         canvas.drawColor(DEFAULT_BACKGROUND)
 
         drawVertices(canvas)
+
+        drawEdges(canvas)
+
+        drawDraggingEdge(canvas)
     }
 
     private fun drawVertices(canvas: Canvas) {
@@ -93,6 +116,33 @@ class GraphView @JvmOverloads constructor(
         )
     }
 
+    private fun drawEdges(canvas: Canvas) {
+        for (edge in edgeItemList)
+            drawEdge(canvas, edge)
+    }
+
+    private fun drawEdge(canvas: Canvas, edge: EdgeItem) {
+        with(edge) {
+            edgePaint.color = edge.color
+            canvas.drawLine(
+                x1, y1,
+                x2, y2,
+                edgePaint
+            )
+        }
+    }
+
+    private fun drawDraggingEdge(canvas: Canvas) {
+        draggingEdge?.let {
+            edgePaint.color = draggingEdge!!.color
+            canvas.drawLine(
+                draggingEdge!!.x1, draggingEdge!!.y1,
+                draggingEdge!!.x2, draggingEdge!!.y2,
+                edgePaint
+            )
+        }
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         when (event?.action) {
@@ -103,6 +153,9 @@ class GraphView @JvmOverloads constructor(
                     if (distance < vertexRadius) {
                         holdedVertex = vertex
                         handler.postDelayed(draggingVertexRunnable, longPressDelay)
+
+                        draggingEdgeStartVertex = vertex
+
                         return true
                     }
 
@@ -116,10 +169,9 @@ class GraphView @JvmOverloads constructor(
             MotionEvent.ACTION_MOVE -> {
                 handler.removeCallbacks(draggingVertexRunnable)
                 if (draggingVertex != null) {
-                    draggingVertex!!.apply {
-                        x = event.x
-                        y = event.y
-                    }
+                    updateDraggingVertex(event.x to event.y)
+                } else if (draggingEdgeStartVertex != null) {
+                    addDraggingEdge(draggingEdgeStartVertex!!, event.x to event.y)
                 }
 
                 invalidate()
@@ -129,6 +181,8 @@ class GraphView @JvmOverloads constructor(
                 handler.removeCallbacks(draggingVertexRunnable)
                 draggingVertex = null
                 holdedVertex = null
+
+                updateDraggingEdge(event.x to event.y)
 
                 invalidate()
             }
@@ -170,6 +224,84 @@ class GraphView @JvmOverloads constructor(
 
             interpolator = AccelerateInterpolator()
         }.start()
+    }
+
+    private fun updateDraggingVertex(coordinate: Pair<Float, Float>) {
+        draggingVertex!!.apply {
+            x = coordinate.first
+            y = coordinate.second
+        }
+    }
+
+    private fun addDraggingEdge(startVertex: VertexItem, currentPosition: Pair<Float, Float>) {
+        val x1 = startVertex.x
+        val y1 = startVertex.y
+        val x2 = currentPosition.first
+        val y2 = currentPosition.second
+
+        val dx = x2 - x1
+
+        val slope = (y2 - y1) / (x2 - x1)
+        var x = cos(atan(slope)) * vertexRadius
+        var y = sin(atan(slope)) * vertexRadius
+
+        if (dx < 0) {
+            x = -x
+            y = -y
+        }
+
+        draggingEdge = EdgeItem(
+            startVertex, null,
+            x1 + x, y1 + y,
+            x2, y2,
+            edgeColor
+        )
+    }
+
+    private fun updateDraggingEdge(coordinate: Pair<Float, Float>) {
+
+        if (draggingEdgeStartVertex != null) {
+            for (vertex in vertexItemList) {
+                val distance = vertex distanceTo (coordinate.first to coordinate.second)
+
+                if (distance < vertex.radius) {
+                    addEdge(draggingEdgeStartVertex!!, vertex)
+                    break
+                }
+            }
+
+            draggingEdgeStartVertex = null
+            draggingEdge = null
+        }
+    }
+
+    private fun addEdge(startVertex: VertexItem, endVertex: VertexItem) {
+        numEdges++
+
+        val x1 = startVertex.x
+        val y1 = startVertex.y
+        val x2 = endVertex.x
+        val y2 = endVertex.y
+
+        val dx = x2 - x1
+
+        val slope = (y2 - y1) / (x2 - x1)
+        var x = cos(atan(slope)) * vertexRadius
+        var y = sin(atan(slope)) * vertexRadius
+
+        if (dx < 0) {
+            x = -x
+            y = -y
+        }
+
+        val edge = EdgeItem(
+            startVertex, endVertex,
+            x1 + x, y1 + y,
+            x2 - x, y2 - y,
+            edgeColor
+        )
+
+        edgeItemList.add(edge)
     }
 
     private fun fromDpToPx(dp: Int) = context.resources.displayMetrics.density * dp
