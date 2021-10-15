@@ -12,5 +12,8 @@
     <color name="xanadu">#708D81</color>
     <color name="fandango">#B83D87</color>
     <color name="barn_red">#720F08</color>
+
     <color name="flame">#EC4E20</color>
+    <color name="gainsboro">#E0E0E0</color>
+    <color name="dark_goldenrod">#B68F40</color>
 </resources>

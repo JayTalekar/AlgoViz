@@ -31,6 +31,11 @@ class GraphView @JvmOverloads constructor(
         this.isHapticFeedbackEnabled = true
     }
 
+    lateinit var adjacencyMatrix: Array<Array<Boolean>>
+        private set
+
+    var onAdjacencyMatrixUpdated: (() -> Unit)? = null
+
     private val longPressDelay = 500L
 
     private val transitionColor = resources.getColor(R.color.royal_purple)
@@ -71,7 +76,9 @@ class GraphView @JvmOverloads constructor(
     private var edgeItemList = mutableListOf<EdgeItem>()
     private var numEdges: Int = 0
 
+    // Default Vertex Attributes
     private var edgeColor = resources.getColor(R.color.barn_red)
+    private val draggingEdgeColor = resources.getColor(R.color.dark_goldenrod)
 
     private var edgePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -79,6 +86,7 @@ class GraphView @JvmOverloads constructor(
         strokeWidth = 20f
         elevation = 0f
     }
+    // Default Vertex Attributes End
 
 
     override fun draw(canvas: Canvas) {
@@ -194,8 +202,11 @@ class GraphView @JvmOverloads constructor(
     private fun addVertex(coordinate: Pair<Float, Float>) {
         numVertices++
 
+        updateAdjacencyMatrix(numVertices)
+
         val vertex = VertexItem(
             numVertices, coordinate.first, coordinate.second,
+            mutableListOf(),
             vertexRadius, vertexColor
         )
 
@@ -227,9 +238,30 @@ class GraphView @JvmOverloads constructor(
     }
 
     private fun updateDraggingVertex(coordinate: Pair<Float, Float>) {
-        draggingVertex!!.apply {
+        draggingVertex?.apply {
             x = coordinate.first
             y = coordinate.second
+
+            for (edge in edgeList) {
+                if (edge.startVertex == this) {
+                    val offset = getEdgeOffsets(x, y, edge.x2, edge.y2)
+
+                    edge.x1 = x + offset.first
+                    edge.y1 = y + offset.second
+
+                    edge.x2 = edge.endVertex!!.x - offset.first
+                    edge.y2 = edge.endVertex.y - offset.second
+
+                } else if (edge.endVertex == this) {
+                    val offset = getEdgeOffsets(edge.x1, edge.y1, x, y)
+
+                    edge.x1 = edge.startVertex.x + offset.first
+                    edge.y1 = edge.startVertex.y + offset.second
+
+                    edge.x2 = x - offset.first
+                    edge.y2 = y - offset.second
+                }
+            }
         }
     }
 
@@ -239,22 +271,15 @@ class GraphView @JvmOverloads constructor(
         val x2 = currentPosition.first
         val y2 = currentPosition.second
 
-        val dx = x2 - x1
-
-        val slope = (y2 - y1) / (x2 - x1)
-        var x = cos(atan(slope)) * vertexRadius
-        var y = sin(atan(slope)) * vertexRadius
-
-        if (dx < 0) {
-            x = -x
-            y = -y
-        }
+        val offset = getEdgeOffsets(x1, y1, x2, y2)
+        val x = offset.first
+        val y = offset.second
 
         draggingEdge = EdgeItem(
             startVertex, null,
             x1 + x, y1 + y,
             x2, y2,
-            edgeColor
+            draggingEdgeColor
         )
     }
 
@@ -276,13 +301,70 @@ class GraphView @JvmOverloads constructor(
     }
 
     private fun addEdge(startVertex: VertexItem, endVertex: VertexItem) {
+        for (edge in edgeItemList) {
+            if ((edge.startVertex == startVertex && edge.endVertex == endVertex)
+                || (edge.startVertex == endVertex && edge.endVertex == startVertex)
+            )
+                return
+        }
+
         numEdges++
+
+        updateAdjacencyMatrix(startVertex.number, endVertex.number)
 
         val x1 = startVertex.x
         val y1 = startVertex.y
         val x2 = endVertex.x
         val y2 = endVertex.y
 
+        val offset = getEdgeOffsets(x1, y1, x2, y2)
+        val x = offset.first
+        val y = offset.second
+
+        val edge = EdgeItem(
+            startVertex, endVertex,
+            x1 + x, y1 + y,
+            x2 - x, y2 - y,
+            edgeColor
+        )
+
+        edgeItemList.add(edge)
+
+        startVertex.edgeList.add(edge)
+        endVertex.edgeList.add(edge)
+    }
+
+    private fun updateAdjacencyMatrix(numVertices: Int) {
+        if (numVertices == 1) {
+            adjacencyMatrix = Array(1) {
+                Array(1) { pos -> false }
+            }
+            return
+        }
+
+        val newAdjacencyMatrix = Array(numVertices) { row ->
+            Array(numVertices) { col ->
+                if (row < adjacencyMatrix.size && col < adjacencyMatrix[0].size)
+                    adjacencyMatrix[row][col]
+                else false
+            }
+        }
+
+        adjacencyMatrix = newAdjacencyMatrix
+
+        onAdjacencyMatrixUpdated?.invoke()
+    }
+
+    private fun updateAdjacencyMatrix(startVertex: Int, endVertex: Int) {
+        if (startVertex <= adjacencyMatrix.size || endVertex <= adjacencyMatrix.size) {
+            adjacencyMatrix[startVertex - 1][endVertex - 1] = true
+            adjacencyMatrix[endVertex - 1][startVertex - 1] = true
+        }
+
+        onAdjacencyMatrixUpdated?.invoke()
+    }
+
+    private fun getEdgeOffsets(x1: Float, y1: Float, x2: Float, y2: Float): Pair<Float, Float> {
         val dx = x2 - x1
 
         val slope = (y2 - y1) / (x2 - x1)
@@ -294,14 +376,7 @@ class GraphView @JvmOverloads constructor(
             y = -y
         }
 
-        val edge = EdgeItem(
-            startVertex, endVertex,
-            x1 + x, y1 + y,
-            x2 - x, y2 - y,
-            edgeColor
-        )
-
-        edgeItemList.add(edge)
+        return x to y
     }
 
     private fun fromDpToPx(dp: Int) = context.resources.displayMetrics.density * dp

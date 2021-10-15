@@ -6,6 +6,7 @@ data class VertexItem(
     var number: Int,
     var x: Float,
     var y: Float,
+    val edgeList: MutableList<EdgeItem>,
     var radius: Float,
     var color: Int
 ) {
