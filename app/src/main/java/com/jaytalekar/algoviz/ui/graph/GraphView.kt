@@ -36,6 +36,8 @@ class GraphView @JvmOverloads constructor(
 
     var onAdjacencyMatrixUpdated: (() -> Unit)? = null
 
+    var isAnimating: Boolean = false
+
     private val longPressDelay = 500L
 
     private val transitionColor = resources.getColor(R.color.royal_purple)
@@ -229,6 +231,9 @@ class GraphView @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        if (isAnimating)
+            return false
 
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -439,6 +444,15 @@ class GraphView @JvmOverloads constructor(
         }
 
         onAdjacencyMatrixUpdated?.invoke()
+    }
+
+    fun resetView() {
+        this.numVertices = 0
+        this.vertexItemList.clear()
+        this.numEdges = 0
+        this.edgeItemList.clear()
+
+        invalidate()
     }
 
     private fun getEdgeOffsets(x1: Float, y1: Float, x2: Float, y2: Float): Pair<Float, Float> {

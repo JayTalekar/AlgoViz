@@ -4,19 +4,19 @@ import java.util.*
 
 class BFSRunner(matrix: Array<Array<Boolean>>) : TraversalRunner(matrix) {
 
-    private val stack: Stack<Int> = Stack()
+    private val queue: Queue<Int> = LinkedList()
 
     override fun run() {
         var currentNode = 0
-        stack.push(currentNode)
+        queue.add(currentNode)
         orderedVisitedNodes.add(currentNode)
 
-        while (stack.isNotEmpty()) {
-            currentNode = stack.pop()
+        while (queue.isNotEmpty()) {
+            currentNode = queue.remove()
 
             adjacencyMatrix[currentNode].forEachIndexed { node, connected ->
                 if (connected && !orderedVisitedNodes.contains(node)) {
-                    stack.push(node)
+                    queue.add(node)
                     orderedTraversedEdges.add(currentNode to node)
                     orderedVisitedNodes.add(node)
                 }

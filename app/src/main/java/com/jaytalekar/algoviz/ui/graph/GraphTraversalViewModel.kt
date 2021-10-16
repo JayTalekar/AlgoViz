@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaytalekar.algoviz.domain.graph.BFSRunner
+import com.jaytalekar.algoviz.domain.graph.DFSRunner
 import com.jaytalekar.algoviz.domain.graph.TraversalRunner
 import kotlinx.coroutines.*
 
@@ -32,9 +33,11 @@ class GraphTraversalViewModel : ViewModel() {
         this.adjacencyMatrix = matrix
     }
 
-    fun runAlgorithm() {
-        adjacencyMatrix?.let {
-            traversalRunner = BFSRunner(it)
+    fun runAlgorithm(isBFS: Boolean) {
+        if (adjacencyMatrix != null) {
+            traversalRunner = if (isBFS) BFSRunner(adjacencyMatrix!!)
+            else DFSRunner(adjacencyMatrix!!)
+
             traversalRunner.run()
 
             animateGraph()
@@ -45,13 +48,14 @@ class GraphTraversalViewModel : ViewModel() {
 
         viewModelScope.launch {
             withContext(defaultDispatcher) {
-                _animationInProgress.postValue(true)
 
                 async {
+                    _animationInProgress.postValue(true)
                     for (node in traversalRunner.orderedVisitedNodes) {
                         _visitedVertex.postValue(node)
                         delay(1500)
                     }
+                    _animationInProgress.postValue(false)
                 }
 
                 async {
@@ -61,9 +65,12 @@ class GraphTraversalViewModel : ViewModel() {
                     }
                 }
 
-                _animationInProgress.postValue(false)
             }
         }
+    }
+
+    fun reset() {
+        adjacencyMatrix = null
     }
 
 }

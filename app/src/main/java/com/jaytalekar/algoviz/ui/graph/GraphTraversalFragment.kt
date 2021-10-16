@@ -42,6 +42,12 @@ class GraphTraversalFragment : Fragment() {
             graphView.animateTraversedEdge(edge.first, edge.second)
         })
 
+        viewModel.animationInProgress.observe(viewLifecycleOwner, {
+            graphView.isAnimating = it
+            if (it) disableControls()
+            else enableControls()
+        })
+
         return rootView
     }
 
@@ -79,9 +85,25 @@ class GraphTraversalFragment : Fragment() {
                 tvBFS.typeface = Typeface.DEFAULT
             }
             R.id.tv_traverse -> {
-                viewModel.runAlgorithm()
+                viewModel.runAlgorithm(isBFSSelected)
+            }
+            R.id.tv_reset -> {
+                graphView.resetView()
+                viewModel.reset()
             }
         }
+    }
+
+    private fun disableControls() {
+        tvBFS.isClickable = false
+        tvDFS.isClickable = false
+        tvTraverse.isClickable = false
+    }
+
+    private fun enableControls() {
+        tvBFS.isClickable = true
+        tvDFS.isClickable = true
+        tvTraverse.isClickable = true
     }
 
 }
