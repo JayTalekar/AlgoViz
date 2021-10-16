@@ -55,6 +55,7 @@ class GraphView @JvmOverloads constructor(
 
     // Default Vertex Attributes
     private val vertexColor = resources.getColor(R.color.fandango)
+    private val visitedVertexColor = resources.getColor(R.color.purple)
     private val vertexRadius = fromDpToPx(20)
     private val vertexLabelSize = fromDpToPx(18)
 
@@ -79,6 +80,7 @@ class GraphView @JvmOverloads constructor(
     // Default Vertex Attributes
     private var edgeColor = resources.getColor(R.color.barn_red)
     private val draggingEdgeColor = resources.getColor(R.color.dark_goldenrod)
+    private val traversedEdgeColor = resources.getColor(R.color.flame)
 
     private var edgePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
@@ -149,6 +151,81 @@ class GraphView @JvmOverloads constructor(
                 edgePaint
             )
         }
+    }
+
+    fun animateTraversedEdge(v1: Int, v2: Int) {
+        var traversedEdge: EdgeItem? = null
+
+        val startVertex = vertexItemList[v1]
+        val endVertex = vertexItemList[v2]
+
+        for (edge in startVertex.edgeList) {
+            if (edge.endVertex == endVertex) {
+                traversedEdge = edge
+                break
+            } else if (edge.startVertex == endVertex) {
+                traversedEdge = edge
+                var temp = traversedEdge.x1
+                traversedEdge.x1 = traversedEdge.x2
+                traversedEdge.x2 = temp
+
+                temp = traversedEdge.y1
+                traversedEdge.y1 = traversedEdge.y2
+                traversedEdge.y2 = temp
+            }
+        }
+
+        traversedEdge?.apply {
+            val slope = (y2 - y1) / (x2 - x1)
+            val slopeX1 = slope * x1
+
+            val lengthProp = PropertyValuesHolder.ofFloat("length", x1, x2)
+
+            val colorProp = PropertyValuesHolder.ofObject(
+                "color",
+                ArgbEvaluator(),
+                edgeColor,
+                traversedEdgeColor
+            )
+
+            ObjectAnimator.ofPropertyValuesHolder(colorProp, lengthProp).apply {
+                duration = 1500
+
+                addUpdateListener {
+                    x2 = it.getAnimatedValue("length") as Float
+                    y2 = slope * x2 - slopeX1 + y1
+
+                    color = it.getAnimatedValue("color") as Int
+
+                    invalidate()
+                }
+
+                interpolator = AccelerateInterpolator()
+            }.start()
+        }
+    }
+
+    fun animateVisitedVertex(vertexValue: Int) {
+        val visitedVertex: VertexItem = vertexItemList[vertexValue]
+
+        val colorProp = PropertyValuesHolder.ofObject(
+            "color",
+            ArgbEvaluator(),
+            vertexColor,
+            visitedVertexColor
+        )
+
+        ObjectAnimator.ofPropertyValuesHolder(colorProp).apply {
+            duration = 500
+
+            addUpdateListener {
+                visitedVertex.color = it.getAnimatedValue("color") as Int
+
+                invalidate()
+            }
+
+            interpolator = AccelerateInterpolator()
+        }.start()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

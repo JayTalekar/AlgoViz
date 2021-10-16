@@ -46,4 +46,7 @@
 
     <string name="shortest_path">Shortest Path</string>
     <string name="graph_traversal">Graph Traversal</string>
+    <string name="bfs">BFS</string>
+    <string name="dfs">DFS</string>
+    <string name="traverse">Traverse</string>
 </resources>
